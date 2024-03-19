@@ -92,7 +92,7 @@ def load_model(device_type, model_id, model_basename=None, LOGGING=logging):
     )
 
     local_llm = HuggingFacePipeline(pipeline=pipe)
-    logging.info("Local LLM Loaded")
+    # logging.info("Local LLM Loaded")
 
     return local_llm
 
@@ -122,7 +122,7 @@ def retrieval_qa_pipline(device_type, use_history, promptTemplate_type="llama"):
 
     """
     (1) Chooses an appropriate langchain library based on the enbedding model name.  Matching code is contained within ingest.py.
-    
+
     (2) Provides additional arguments for instructor and BGE models to improve results, pursuant to the instructions contained on
     their respective huggingface repository, project page or github repository.
     """
@@ -211,9 +211,9 @@ def retrieval_qa_pipline(device_type, use_history, promptTemplate_type="llama"):
     "--model_type",
     default="llama",
     type=click.Choice(
-        ["llama", "mistral", "non_llama"],
+        ["llama", "mistral", "persian_llama","persian_mind", "non_llama"],
     ),
-    help="model type, llama, mistral or non_llama",
+    help="model type, llama, mistral, persianMind or non_llama",
 )
 @click.option(
     "--save_qa",

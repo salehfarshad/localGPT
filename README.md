@@ -195,7 +195,7 @@ Another option is to enable chat history. ***Note***: This is disabled by defaul
 python run_localGPT.py --use_history
 ```
 
-You can store user questions and model responses with flag `--save_qa` into a csv file `/local_chat_history/qa_log.csv`. Every interaction will be stored. 
+You can store user questions and model responses with flag `--save_qa` into a csv file `/local_chat_history/qa_log.csv`. Every interaction will be stored.
 
 ```shell
 python run_localGPT.py --qa_save
@@ -267,7 +267,7 @@ To use this software, you must have Python 3.10 or later installed. Earlier vers
 
 ## C++ Compiler
 
-If you encounter an error while building a wheel during the `pip install` process, you may need to install a C++ compiler on your computer.
+If you encount1er an error while building a wheel during the `pip install` process, you may need to install a C++ compiler on your computer.
 
 ### For Windows 10/11
 

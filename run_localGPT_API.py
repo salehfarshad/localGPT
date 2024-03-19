@@ -28,7 +28,7 @@ else:
 
 SHOW_SOURCES = True
 logging.info(f"Running on: {DEVICE_TYPE}")
-logging.info(f"Display Source Documents set to: {SHOW_SOURCES}")
+# logging.info(f"Display Source Documents set to: {SHOW_SOURCES}")
 
 EMBEDDINGS = HuggingFaceInstructEmbeddings(model_name=EMBEDDING_MODEL_NAME, model_kwargs={"device": DEVICE_TYPE})
 

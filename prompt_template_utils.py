@@ -1,6 +1,6 @@
 """
-This file implements prompt template for llama based models. 
-Modify the prompt template based on the model you select. 
+This file implements prompt template for llama based models.
+Modify the prompt template based on the model you select.
 This seems to have significant impact on the output of the LLM.
 """
 
@@ -8,10 +8,20 @@ from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 
 # this is specific to Llama-2.
+system_prompt1 = """You are an assistant for question-answering tasks.
+Use the following pieces of retrieved context to answer the question.
+If you don't know the answer, just say that you don't know."""
 
 system_prompt = """You are a helpful assistant, you will use the provided context to answer user questions.
-Read the given context before answering questions and think step by step. If you can not answer a user question based on 
+Read the given context before answering questions and think step by step.If you can not answer a user question based on
 the provided context, inform the user. Do not use any other information for answering user. Provide a detailed answer to the question."""
+
+fa_sys = """
+شما يک دستيار هوشمند هستيد.
+شما از محتواي داده شده از اسناد به سئوالات کاربر جواب می دهيد.
+اگر به سئوال کاربر بر اساس اسناد داده شده نمی توانید جواب دهید، به کاربر اعلام کنید.
+به سئوالات کاربر به صورت کامل با جزئیات پاسخ دهید.
+"""
 
 
 def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, history=False):
@@ -21,15 +31,18 @@ def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, h
         SYSTEM_PROMPT = B_SYS + system_prompt + E_SYS
         if history:
             instruction = """
-            Context: {history} \n {context}
-            User: {question}"""
+            Context: {history} \n
+            {context}
+            User: {question}
+            """
 
             prompt_template = B_INST + SYSTEM_PROMPT + instruction + E_INST
             prompt = PromptTemplate(input_variables=["history", "context", "question"], template=prompt_template)
         else:
             instruction = """
             Context: {context}
-            User: {question}"""
+            User: {question}
+            """
 
             prompt_template = B_INST + SYSTEM_PROMPT + instruction + E_INST
             prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
@@ -40,9 +53,11 @@ def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, h
                 B_INST
                 + system_prompt
                 + """
-    
-            Context: {history} \n {context}
-            User: {question}"""
+
+                Context: {history} \n
+                {context}
+                User: {question}
+                """
                 + E_INST
             )
             prompt = PromptTemplate(input_variables=["history", "context", "question"], template=prompt_template)
@@ -51,32 +66,91 @@ def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, h
                 B_INST
                 + system_prompt
                 + """
-            
-            Context: {context}
-            User: {question}"""
+
+                Context: {context}
+                User: {question}
+                """
                 + E_INST
             )
             prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
+    elif promptTemplate_type == "persian_llama":
+        B_INST, E_INST = "### Instruction: ", ""
+        if history:
+            prompt_template = (
+                B_INST
+                + fa_sys
+                + """
+
+                {history} \n
+                {context}
+                ### Input: {question}
+                ### Response:
+                """
+            )
+            prompt = PromptTemplate(input_variables=["history", "context", "question"], template=prompt_template)
+        else:
+            prompt_template = (
+                B_INST
+                + fa_sys
+                + """
+
+                {context}
+                ### Input: {question}
+                ### Response:
+                """
+            )
+            prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
+    elif promptTemplate_type == "persian_mind":
+        B_INST, E_INST = "### Instruction: ", ""
+        if history:
+            prompt_template = (
+                B_INST
+                + fa_sys
+                + """
+
+                {history} \n
+                {context}
+                ### Input: {question}
+
+                ### Response:
+                """
+            )
+            prompt = PromptTemplate(input_variables=["history", "context", "question"], template=prompt_template)
+        else:
+            prompt_template = (
+                B_INST
+                + fa_sys
+                + """
+
+                {context}
+                ### Input: {question}
+
+                ### Response:
+                """
+            )
+            prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
+
     else:
-        # change this based on the model you have selected.
         if history:
             prompt_template = (
                 system_prompt
                 + """
-    
-            Context: {history} \n {context}
-            User: {question}
-            Answer:"""
+
+                Context: {history} \n {context}
+                You: {question}
+                Answer:
+                """
             )
             prompt = PromptTemplate(input_variables=["history", "context", "question"], template=prompt_template)
         else:
             prompt_template = (
                 system_prompt
                 + """
-            
-            Context: {context}
-            User: {question}
-            Answer:"""
+
+                Context: {context}
+                You: {question}
+                Answer:
+                """
             )
             prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
 
@@ -84,5 +158,4 @@ def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, h
 
     return (
         prompt,
-        memory,
-    )
+        memory,)

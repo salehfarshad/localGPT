@@ -47,7 +47,8 @@ def load_quantized_model_gguf_ggml(model_id, model_basename, device_type, loggin
             "n_ctx": CONTEXT_WINDOW_SIZE,
             "max_tokens": MAX_NEW_TOKENS,
             "n_batch": N_BATCH,  # set this based on your GPU & CPU RAM
-        }
+            "temperature": 0.2
+          }
         if device_type.lower() == "mps":
             kwargs["n_gpu_layers"] = 1
         if device_type.lower() == "cuda":
@@ -139,6 +140,7 @@ def load_full_model(model_id, model_basename, device_type, logging):
         logging.info("Using LlamaTokenizer")
         tokenizer = LlamaTokenizer.from_pretrained(model_id, cache_dir="./models/")
         model = LlamaForCausalLM.from_pretrained(model_id, cache_dir="./models/")
+
     else:
         logging.info("Using AutoModelForCausalLM for full models")
         tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir="./models/")

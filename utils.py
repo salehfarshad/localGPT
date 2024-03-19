@@ -5,7 +5,7 @@ from constants import EMBEDDING_MODEL_NAME
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.embeddings import HuggingFaceBgeEmbeddings
 from langchain.embeddings import HuggingFaceEmbeddings
-
+from langchain.embeddings import HuggingFaceBertEmbeddings
 
 def log_to_csv(question, answer):
 
@@ -46,8 +46,14 @@ def get_embeddings(device_type="cuda"):
             query_instruction="Represent this sentence for searching relevant passages:",
         )
 
+    elif "bert" in EMBEDDING_MODEL_NAME:
+        return HuggingFaceBertEmbeddings(
+            model_name=EMBEDDING_MODEL_NAME,
+            model_kwargs={"device": device_type},
+        )
     else:
         return HuggingFaceEmbeddings(
             model_name=EMBEDDING_MODEL_NAME,
             model_kwargs={"device": device_type},
         )
+

@@ -8,7 +8,6 @@ from langchain.document_loaders import CSVLoader, PDFMinerLoader, TextLoader, Un
 from langchain.document_loaders import UnstructuredFileLoader, UnstructuredMarkdownLoader
 from langchain.document_loaders import UnstructuredHTMLLoader
 
-
 # load_dotenv()
 ROOT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -30,17 +29,16 @@ CHROMA_SETTINGS = Settings(
 
 # Context Window and Max New Tokens
 CONTEXT_WINDOW_SIZE = 4096
-MAX_NEW_TOKENS = CONTEXT_WINDOW_SIZE  # int(CONTEXT_WINDOW_SIZE/4)
+MAX_NEW_TOKENS = 1024 # int(CONTEXT_WINDOW_SIZE/4)
 
 #### If you get a "not enough space in the buffer" error, you should reduce the values below, start with half of the original values and keep halving the value until the error stops appearing
 
-N_GPU_LAYERS = 100  # Llama-2-70B has 83 layers
-N_BATCH = 512
-
-### From experimenting with the Llama-2-7B-Chat-GGML model on 8GB VRAM, these values work:
-# N_GPU_LAYERS = 20
+# N_GPU_LAYERS = 100  # Llama33-2-70B has 83 layers
 # N_BATCH = 512
 
+### From experimenting with the Llama-2-7B-Chat-GGML model on 8GB VRAM, these values work:
+N_GPU_LAYERS = 20
+N_BATCH = 512
 
 # https://python.langchain.com/en/latest/_modules/langchain/document_loaders/excel.html#UnstructuredExcelLoader
 DOCUMENT_MAP = {
@@ -75,7 +73,10 @@ EMBEDDING_MODEL_NAME = "hkunlp/instructor-large"  # Uses 1.5 GB of VRAM (High Ac
 
 # EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-large" # Uses 2.5 GB of VRAM
 # EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-base" # Uses 1.2 GB of VRAM
-
+# EMBEDDING_MODEL_NAME = "google-bert/bert-base-multilingual-uncased"  # Uses 1.2 GB of VRAM
+# EMBEDDING_MODEL_NAME = "HooshvareLab/bert-base-parsbert-uncased"
+# EMBEDDING_MODEL_NAME = "HooshvareLab/bert-fa-base-uncased"
+# EMBEDDING_MODEL_NAME = "HooshvareLab/bert-fa-zwnj-base"
 
 #### SELECT AN OPEN SOURCE LLM (LARGE LANGUAGE MODEL)
 # Select the Model ID and model_basename
@@ -97,13 +98,32 @@ EMBEDDING_MODEL_NAME = "hkunlp/instructor-large"  # Uses 1.5 GB of VRAM (High Ac
 #### (FOR GGUF MODELS)
 ####
 
+
 # MODEL_ID = "TheBloke/Llama-2-13b-Chat-GGUF"
 # MODEL_BASENAME = "llama-2-13b-chat.Q4_K_M.gguf"
 
-MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
-MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
+# MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
+# MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 
-# MODEL_ID = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+# MODEL_ID = "asedmammad/PersianMind-v1.0-GGUF"
+# MODEL_BASENAME = "PersianMind-v1.0.q2_K.gguf"
+# MODEL_BASENAME = "PersianMind-v1.0.q4_K_M.gguf"
+
+# MODEL_ID = "mostafaamiri/persian-llama-7b-GGUF-Q4"
+# MODEL_BASENAME = "persian_llama_7b.Q4_K_M.gguf"
+
+# MODEL_ID = "erfanium/Maral-7B-alpha-1-GGUF"
+# MODEL_BASENAME = "maral_7b_alpha_1.Q4_K_M.gguf"
+
+# MODEL_ID = "aidal/Persian-Mistral-7B"
+# MODEL_BASENAME = None
+
+#MODEL_ID = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+#MODEL_BASENAME = "mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+
+# MODEL_ID = "TheBloke/Mistral-7B-Instruct-v0.2-GGUF"
+# MODEL_BASENAME = "mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+
 # MODEL_BASENAME = "mistral-7b-instruct-v0.1.Q8_0.gguf"
 
 # MODEL_ID = "TheBloke/Llama-2-70b-Chat-GGUF"
@@ -115,7 +135,7 @@ MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 
 # MODEL_ID = "NousResearch/Llama-2-7b-chat-hf"
 # MODEL_BASENAME = None
-# MODEL_ID = "TheBloke/vicuna-7B-1.1-HF"
+# MODEL_ID = "TheBloke/vicuna-7B-1.1-HF"py
 # MODEL_BASENAME = None
 # MODEL_ID = "TheBloke/Wizard-Vicuna-7B-Uncensored-HF"
 # MODEL_ID = "TheBloke/guanaco-7B-HF"
@@ -150,6 +170,9 @@ MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 # MODEL_BASENAME = "nous-hermes-13b-GPTQ-4bit-128g.no-act.order"
 # MODEL_ID = "TheBloke/WizardLM-13B-V1.2-GPTQ"
 # MODEL_BASENAME = "gptq_model-4bit-128g.safetensors
+
+MODEL_ID = "gpt2"
+MODEL_BASENAME = "model.safetensors"
 
 ### 30b GPTQ Models for 24GB GPUs (*** Requires using intfloat/e5-base-v2 instead of hkunlp/instructor-large as embedding model ***)
 # MODEL_ID = "TheBloke/Wizard-Vicuna-30B-Uncensored-GPTQ"
@@ -186,3 +209,5 @@ MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 ####
 # MODEL_ID = "TheBloke/Llama-2-7B-Chat-AWQ"
 # MODEL_BASENAME = "model.safetensors.awq"
+
+

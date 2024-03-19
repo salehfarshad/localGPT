@@ -97,7 +97,7 @@ if "QA" not in st.session_state:
     )
     st.session_state["QA"] = QA
 
-st.title("LocalGPT App 💬")
+st.title("Farshad LocalGPT App 💬")
 # Create a text input box for the user
 prompt = st.text_input("Input your prompt here")
 # while True:
